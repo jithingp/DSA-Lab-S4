@@ -1,0 +1,68 @@
+struct s* insert(struct s* node,struct s* z){
+    if(node==NULL)
+    return z;
+    else if(z->key<node->key){
+        node->left=insert(node->left,z);
+        node->left->parent=node;
+        if(node->left->color=='B')
+            return node;
+        else{
+            if(node->left->left!=NULL){
+            if(node->left->left->color=='R'){
+                
+                if(node->right==NULL||node->right->color=='B'){
+                    if(node->left->right!=NULL)
+                    if(node->left->right->color=='R'){
+                        node->left=rotateleft(node->left);
+                    }
+                    struct s* y=rotateright(node);
+                    y->right->color='R';
+                    y->color='B';
+                    return y;
+                }
+                else{
+                    node->right->color='B';
+                    node->left->color='B';
+                    node->color='R';
+                    return node;
+                }
+            }
+           
+            }
+           
+        }
+        return node;    
+    }
+    else{
+        node->right=insert(node->right,z);
+        node->right->parent=node;
+        if(node->right->color=='B'){
+            return node;
+        }
+        else{
+            if(node->right->right!=NULL){
+                if(node->right->right->color=='R'){
+                    
+                    if(node->left==NULL||node->left->color=='B'){
+                        if(node->right->left!=NULL)
+                        if(node->right->left->color=='R'){
+                            node->right=rotateright(node->right);
+                        }
+                        struct s* y=rotateleft(node);
+                        y->left->color='R';
+                        y->color='B';
+                        return y;
+                    }
+                    else{
+                        node->left->color='B';
+                        node->right->color='B';
+                        node->color='R';
+                        return node;
+                    }
+                }
+            }
+            
+        }
+        return node;
+    }
+}
